@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>结构图生成器（Draw.io变量驱动版）</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f8f8f8;
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    label, textarea, button {
+      display: block;
+      margin: 0.5rem 0;
+      width: 100%;
+    }
+    textarea {
+      height: 3rem;
+    }
+    iframe {
+      width: 100%;
+      height: 800px;
+      border: 1px solid #ccc;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>结构图生成器（Draw.io变量驱动版）</h2>
+  <label>概念模块（用逗号分隔）</label>
+  <textarea id="concepts">概念1,概念2,概念3</textarea>
+
+  <label>理论模块（用逗号分隔）</label>
+  <textarea id="theories">理论1,理论2,理论3</textarea>
+
+  <label>问题模块（用逗号分隔）</label>
+  <textarea id="problems">问题1,问题2,问题3</textarea>
+
+  <label>原因模块（用逗号分隔）</label>
+  <textarea id="causes">原因1,原因2,原因3</textarea>
+
+  <label>优化措施（用逗号分隔）</label>
+  <textarea id="optimizations">优化1,优化2,优化3</textarea>
+
+  <label>保障措施（用逗号分隔）</label>
+  <textarea id="guarantees">保障1,保障2,保障3</textarea>
+
+  <button onclick="generateDiagram()">生成结构图</button>
+
+  <iframe id="viewer" src="" style="display:none;"></iframe>
+
+  <script>
+    function generateDiagram() {
+      const variables = {
+        concepts: document.getElementById('concepts').value.split(','),
+        theories: document.getElementById('theories').value.split(','),
+        problems: document.getElementById('problems').value.split(','),
+        causes: document.getElementById('causes').value.split(','),
+        optimizations: document.getElementById('optimizations').value.split(','),
+        guarantees: document.getElementById('guarantees').value.split(',')
+      };
+
+      fetch('drawio-template.xml')
+        .then(res => res.text())
+        .then(xml => {
+          Object.entries(variables).forEach(([key, arr]) => {
+            arr.forEach((val, i) => {
+              const placeholder = `{{${key}${i + 1}}}`;
+              xml = xml.replaceAll(placeholder, val.trim());
+            });
+          });
+
+          const blob = new Blob([xml], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const viewer = document.getElementById('viewer');
+          viewer.src = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1#U${encodeURIComponent(url)}`;
+          viewer.style.display = 'block';
+        });
+    }
+  </script>
+</body>
+</html>
