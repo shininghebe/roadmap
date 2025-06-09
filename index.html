@@ -64,7 +64,7 @@
         guarantees: document.getElementById('guarantees').value.split(',')
       };
 
-      fetch('drawio-template.xml')
+      fetch('/drawio-template.xml')
         .then(res => res.text())
         .then(xml => {
           Object.entries(variables).forEach(([key, arr]) => {
