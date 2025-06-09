@@ -1,85 +1,61 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>结构图生成器（Draw.io变量驱动版）</title>
+  <meta charset="UTF-8">
+  <title>参数化图表编辑器</title>
+  <script src="https://app.diagrams.net/js/viewer-static.min.js"></script>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background: #f8f8f8;
-    }
-    h2 {
-      margin-bottom: 1rem;
-    }
-    label, textarea, button {
-      display: block;
-      margin: 0.5rem 0;
-      width: 100%;
-    }
-    textarea {
-      height: 3rem;
-    }
-    iframe {
-      width: 100%;
-      height: 800px;
-      border: 1px solid #ccc;
-      margin-top: 2rem;
-    }
+    body { font-family: sans-serif; padding: 1em; }
+    #form { margin-bottom: 1em; display: flex; flex-wrap: wrap; gap: 1em; }
+    .field { display: flex; flex-direction: column; width: 200px; }
+    .mxgraph { border: 1px solid #ccc; width: 100%; height: 600px; }
   </style>
 </head>
 <body>
-  <h2>结构图生成器（Draw.io变量驱动版）</h2>
+  <h2>可配置图表参数</h2>
+  <div id="form">
+    <div class="field"><label>概念1<input id="concept1" value="概念1"></label></div>
+    <div class="field"><label>概念2<input id="concept2" value="概念2"></label></div>
+    <div class="field"><label>概念3<input id="concept3" value="概念3"></label></div>
 
-  <label>概念模块（用逗号分隔）</label>
-  <textarea id="concepts">概念1,概念2,概念3</textarea>
+    <div class="field"><label>理论1<input id="theory1" value="理论1"></label></div>
+    <div class="field"><label>理论2<input id="theory2" value="理论2"></label></div>
+    <div class="field"><label>理论3<input id="theory3" value="理论3"></label></div>
 
-  <label>理论模块（用逗号分隔）</label>
-  <textarea id="theories">理论1,理论2,理论3</textarea>
+    <div class="field"><label>优化1<input id="opt1" value="优化1"></label></div>
+    <div class="field"><label>优化2<input id="opt2" value="优化2"></label></div>
+    <div class="field"><label>优化3<input id="opt3" value="优化3"></label></div>
 
-  <label>问题模块（用逗号分隔）</label>
-  <textarea id="problems">问题1,问题2,问题3</textarea>
+    <div class="field"><label>保障1<input id="guar1" value="保障1"></label></div>
+    <div class="field"><label>保障2<input id="guar2" value="保障2"></label></div>
+    <div class="field"><label>保障3<input id="guar3" value="保障3"></label></div>
+  </div>
+  <button onclick="updateGraph()">更新图表</button>
 
-  <label>原因模块（用逗号分隔）</label>
-  <textarea id="causes">原因1,原因2,原因3</textarea>
-
-  <label>优化措施（用逗号分隔）</label>
-  <textarea id="optimizations">优化1,优化2,优化3</textarea>
-
-  <label>保障措施（用逗号分隔）</label>
-  <textarea id="guarantees">保障1,保障2,保障3</textarea>
-
-  <button onclick="generateDiagram()">生成结构图</button>
-
-  <iframe id="viewer" src="" style="display:none;"></iframe>
+  <div id="graph-container" class="mxgraph" data-mxgraph="{}"></div>
 
   <script>
-    function generateDiagram() {
-      const variables = {
-        concepts: document.getElementById('concepts').value.split(','),
-        theories: document.getElementById('theories').value.split(','),
-        problems: document.getElementById('problems').value.split(','),
-        causes: document.getElementById('causes').value.split(','),
-        optimizations: document.getElementById('optimizations').value.split(','),
-        guarantees: document.getElementById('guarantees').value.split(',')
-      };
+    const rawXml = `<!-- draw.io XML 替换此处内容 -->`;
 
-      fetch('drawio-template.xml')
-        .then(res => res.text())
-        .then(xml => {
-          Object.entries(variables).forEach(([key, arr]) => {
-            arr.forEach((val, i) => {
-              const placeholder = `{{${key}${i + 1}}}`;
-              xml = xml.replaceAll(placeholder, val.trim());
-            });
-          });
+    function updateGraph() {
+      let updatedXml = rawXml
+        .replace(/value=\"概念1\"/g, `value=\"${document.getElementById('concept1').value}\"`)
+        .replace(/value=\"概念2\"/g, `value=\"${document.getElementById('concept2').value}\"`)
+        .replace(/value=\"概念3\"/g, `value=\"${document.getElementById('concept3').value}\"`)
+        .replace(/value=\"理论1\"/g, `value=\"${document.getElementById('theory1').value}\"`)
+        .replace(/value=\"理论2\"/g, `value=\"${document.getElementById('theory2').value}\"`)
+        .replace(/value=\"理论3\"/g, `value=\"${document.getElementById('theory3').value}\"`)
+        .replace(/value=\"优化1\"/g, `value=\"${document.getElementById('opt1').value}\"`)
+        .replace(/value=\"优化2\"/g, `value=\"${document.getElementById('opt2').value}\"`)
+        .replace(/value=\"优化3\"/g, `value=\"${document.getElementById('opt3').value}\"`)
+        .replace(/value=\"保障1\"/g, `value=\"${document.getElementById('guar1').value}\"`)
+        .replace(/value=\"保障2\"/g, `value=\"${document.getElementById('guar2').value}\"`)
+        .replace(/value=\"保障3\"/g, `value=\"${document.getElementById('guar3').value}\"`);
 
-          const encoded = btoa(unescape(encodeURIComponent(xml)));
-          const viewer = document.getElementById('viewer');
-          viewer.src = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1#R${encoded}`;
-          viewer.style.display = 'block';
-        });
+      const encoded = encodeURIComponent(updatedXml).replace(/'/g, "&apos;");
+      const viewerDiv = document.getElementById("graph-container");
+      viewerDiv.setAttribute("data-mxgraph", JSON.stringify({ xml: updatedXml, resize: true, nav: true }));
+      GraphViewer.processElements();
     }
   </script>
 </body>
