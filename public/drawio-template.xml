@@ -1,3 +1,29 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="Page-1">PUT_YOUR_DRAWIO_XML_HERE</diagram>
+  <diagram name="Page-1" id="sample">
+    <mxGraphModel dx="1424" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="2" value="{{concepts1}}" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="60" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="{{concepts2}}" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="120" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="{{concepts3}}" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="120" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="5" value="{{theories1}}" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="60" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="{{theories2}}" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="120" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="{{theories3}}" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="180" width="120" height="40" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
 </mxfile>
