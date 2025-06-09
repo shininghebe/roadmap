@@ -31,6 +31,7 @@
 </head>
 <body>
   <h2>结构图生成器（Draw.io变量驱动版）</h2>
+
   <label>概念模块（用逗号分隔）</label>
   <textarea id="concepts">概念1,概念2,概念3</textarea>
 
@@ -74,10 +75,9 @@
             });
           });
 
-          const blob = new Blob([xml], { type: 'text/plain' });
-          const url = URL.createObjectURL(blob);
+          const encoded = btoa(unescape(encodeURIComponent(xml)));
           const viewer = document.getElementById('viewer');
-          viewer.src = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1#U${encodeURIComponent(url)}`;
+          viewer.src = `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1#R${encoded}`;
           viewer.style.display = 'block';
         });
     }
